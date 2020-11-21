@@ -1,6 +1,9 @@
 package usantatecla.draughts.models;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Stack;
 
 public class Game {
 
@@ -55,22 +58,16 @@ public class Game {
     }
 
     private Error isCorrectPairMove(Move.Pair move) {
-        List<LegalMovementChecker> checkers = getLegalMovementCheckers();
-        for (LegalMovementChecker checker : checkers) {
-            Error result = checker.check(move);
-            if (result != null) return result;
-        }
+        LegalMovementChecker checker = getLegalMovementCheckers();
+        Error result = checker.check(move);
+        if (result != null) return result;
         List<Piece> betweenDiagonalPieces =
                 this.board.getBetweenDiagonalPieces(move.getOrigin(), move.getTarget());
         return this.board.getPiece(move.getOrigin()).isCorrectMovement(betweenDiagonalPieces, move);
     }
 
-    private List<LegalMovementChecker> getLegalMovementCheckers() {
-        List<LegalMovementChecker> checkers = new ArrayList<>();
-        checkers.add(new EmptyOriginChecker(this.board));
-        checkers.add(new IsPlayerPieceChecker(this.board, this.turn));
-        checkers.add(new NotEmptyTargetChecker(this.board));
-        return checkers;
+    private LegalMovementChecker getLegalMovementCheckers() {
+        return new EmptyOriginChecker(this.board, new IsPlayerPieceChecker(this.board, this.turn, new NotEmptyTargetChecker(this.board, null)));
     }
 
     private void pairMove(List<Coordinate> removedCoordinates, List<Piece> removedPieces, Move.Pair pair) {
@@ -110,7 +107,7 @@ public class Game {
     }
 
     private void unMoves(List<Coordinate> removedCoordinates, List<Piece> removedPieces, Stack<Move.Pair> pairs) {
-        while(!pairs.empty()) {
+        while (!pairs.empty()) {
             Move.Pair pair = pairs.pop();
             this.board.move(pair.getTarget(), pair.getOrigin());
         }
