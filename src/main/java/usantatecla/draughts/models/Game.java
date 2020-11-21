@@ -67,7 +67,9 @@ public class Game {
     }
 
     private LegalMovementChecker getLegalMovementCheckers() {
-        return new EmptyOriginChecker(this.board, new IsPlayerPieceChecker(this.board, this.turn, new NotEmptyTargetChecker(this.board, null)));
+        return new EmptyOriginChecker(this.board,
+                new IsPlayerPieceChecker(this.board, this.turn,
+                        new NotEmptyTargetChecker(this.board, null)));
     }
 
     private void pairMove(List<Coordinate> removedCoordinates, List<Piece> removedPieces, Move.Pair pair) {

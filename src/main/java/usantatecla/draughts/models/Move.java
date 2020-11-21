@@ -16,10 +16,6 @@ public class Move implements Iterable<Move.Pair> {
         }
     }
 
-    Pair get(int i) {
-        return pairs.get(i);
-    }
-
     @Override
     public Iterator<Pair> iterator() {
         return pairs.iterator();
