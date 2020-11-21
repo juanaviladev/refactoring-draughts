@@ -1,12 +1,12 @@
 package usantatecla.draughts.models;
 
-public class EmptyOriginChecker {
+public class EmptyOriginChecker implements LegalMovementChecker {
 
-    public Error check(Board board, int pair, Coordinate... coordinates) {
+    @Override
+    public Error check(Board board, Turn turn, int pair, Coordinate... coordinates) {
         if (board.isEmpty(coordinates[pair]))
             return Error.EMPTY_ORIGIN;
         else
             return null;
     }
-
 }

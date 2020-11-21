@@ -56,7 +56,7 @@ public class Game {
 		assert coordinates[pair] != null;
 		assert coordinates[pair + 1] != null;
 		EmptyOriginChecker emptyOriginChecker = new EmptyOriginChecker();
-		Error error = emptyOriginChecker.check(this.board, pair, coordinates);
+		Error error = emptyOriginChecker.check(this.board, this.turn,pair, coordinates);
 		if(error != null) return error;
 		IsPlayerPieceChecker isPlayerPieceChecker = new IsPlayerPieceChecker();
 		error = isPlayerPieceChecker.check(this.board, this.turn,pair, coordinates);
