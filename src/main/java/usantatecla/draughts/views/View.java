@@ -5,17 +5,21 @@ import usantatecla.draughts.controllers.InteractorControllersVisitor;
 import usantatecla.draughts.controllers.PlayController;
 import usantatecla.draughts.controllers.ResumeController;
 import usantatecla.draughts.controllers.StartController;
+import usantatecla.draughts.utils.YesNoDialog;
 
 public class View implements InteractorControllersVisitor {
 
     private StartView startView;
     private PlayView playView;
-    private ResumeView resumeView;
+
+    private static final String MESSAGE = "¿Queréis jugar otra";
+    private YesNoDialog yesNoDialog;
 
     public View(){
         this.startView = new StartView();
         this.playView = new PlayView();
-        this.resumeView = new ResumeView();
+
+        this.yesNoDialog = new YesNoDialog();
     }
 
     public void interact(InteractorController controller) {
@@ -38,7 +42,15 @@ public class View implements InteractorControllersVisitor {
     @Override
     public void visit(ResumeController resumeController) {
         assert resumeController != null;
-        this.resumeView.interact(resumeController);
+        this.interact(resumeController);
+    }
+
+    void interact(ResumeController resumeController) {
+        assert resumeController != null;
+        if (this.yesNoDialog.read(MESSAGE))
+            resumeController.reset();
+        else
+            resumeController.next();
     }
 
 }

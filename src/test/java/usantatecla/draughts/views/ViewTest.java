@@ -5,14 +5,17 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
 import usantatecla.draughts.controllers.InteractorController;
 import usantatecla.draughts.controllers.PlayController;
 import usantatecla.draughts.controllers.ResumeController;
 import usantatecla.draughts.controllers.StartController;
+import usantatecla.draughts.utils.YesNoDialog;
 
 import static org.mockito.Mockito.*;
 
 public class ViewTest {
+
     @Mock
     private StartView startView;
 
@@ -20,8 +23,12 @@ public class ViewTest {
     private PlayView playView;
 
     @Mock
-    private ResumeView resumeView;
+    YesNoDialog yesNoDialog;
 
+    @Mock
+    ResumeController resumeController;
+
+    @Spy
     @InjectMocks
     private final View view = new View();
 
@@ -50,8 +57,7 @@ public class ViewTest {
     public void testVisitResumeViewVerifyInteractOnce() {
         ResumeController resumeController = mock(ResumeController.class);
         this.view.visit(resumeController);
-        verify(this.resumeView,times(1)).interact(resumeController);
-        verifyNoMoreInteractions(resumeController);
+        verify(this.view,times(1)).interact(resumeController);
     }
 
     @Test
@@ -80,5 +86,19 @@ public class ViewTest {
     @Test(expected = AssertionError.class)
     public void testInteractWithNullControllerShouldThrowAssertionError() {
         this.view.interact(null);
+    }
+
+    @Test
+    public void testGivenResumeQuestionOnYesThenResetState() {
+        when(this.yesNoDialog.read(anyString())).thenReturn(true);
+        this.view.interact(resumeController);
+        verify(resumeController, times(1)).reset();
+    }
+
+    @Test
+    public void testGivenResumeQuestionOnNoThenStateFinal() {
+        when(this.yesNoDialog.read(anyString())).thenReturn(false);
+        this.view.interact(resumeController);
+        verify(resumeController, times(1)).next();
     }
 }
