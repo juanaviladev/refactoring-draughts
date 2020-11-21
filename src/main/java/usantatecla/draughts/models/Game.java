@@ -52,13 +52,12 @@ public class Game {
 		return error;
 	}
 
+
+
 	private Error isCorrectPairMove(int pair, Coordinate... coordinates) {
 		assert coordinates[pair] != null;
 		assert coordinates[pair + 1] != null;
-		List<LegalMovementChecker> checkers = new ArrayList<>();
-		checkers.add(new EmptyOriginChecker());
-		checkers.add(new IsPlayerPieceChecker());
-		checkers.add(new NotEmptyTargetChecker());
+		List<LegalMovementChecker> checkers = getLegalMovementCheckers();
 		for(LegalMovementChecker checker : checkers) {
 			Error result = checker.check(this.board, this.turn, pair, coordinates);
 			if(result != null) return result;
@@ -66,6 +65,14 @@ public class Game {
 		List<Piece> betweenDiagonalPieces =
 			this.board.getBetweenDiagonalPieces(coordinates[pair], coordinates[pair + 1]);
 		return this.board.getPiece(coordinates[pair]).isCorrectMovement(betweenDiagonalPieces, pair, coordinates);
+	}
+
+	private List<LegalMovementChecker> getLegalMovementCheckers() {
+		List<LegalMovementChecker> checkers = new ArrayList<>();
+		checkers.add(new EmptyOriginChecker());
+		checkers.add(new IsPlayerPieceChecker());
+		checkers.add(new NotEmptyTargetChecker());
+		return checkers;
 	}
 
 	private void pairMove(List<Coordinate> removedCoordinates, List<Piece> removedPieces, int pair, Coordinate... coordinates) {
