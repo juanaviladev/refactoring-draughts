@@ -1,0 +1,25 @@
+= Memoria Refactoring
+:toc:
+
+== Null Object en Color
+
+. Aplicando el 'patrón' NULL object, añadimos un nuevo método en el enumerado *Color*.
+Los test continúan en verde, puesto que no hemos hecho cambios que afecten a colaboradores.
+https://github.com/juanaviladev/refactoring-draughts/commit/21f4de3f73798ea7601c0bd62d0fdb7b4c4d2e6c[Ver commit]
+
+. Sustituimos los _return null_ que existen en el código para que devuelvan la nueva constante *NULL*
+del enumerado. Hemos roto las pruebas de aquellos casos que evaluaban el caso de coordenadas fuera del tablero.
+https://github.com/juanaviladev/refactoring-draughts/commit/aa080085fdd9e5a35697347746307087d6d2a288[Ver commit]
+
+. Corregimos los casos de prueba con la nueva constante *NULL*
+https://github.com/juanaviladev/refactoring-draughts/commit/898fdcb6e8c3c77054dbcc334dc77b8a82a419c9[Ver commit]
+
+. Finalmente, refactorizamos aquellos métodos de colaboradores en los que se hace la comparación color != null ó color == null por
+el nuevo método *isNull()*. Todas las pruebas siguen en verde, no ha habido cambios que afecten a los input/output de
+las clases (caja negra).
+.. https://github.com/juanaviladev/refactoring-draughts/commit/4845d05d249bc150e01eadc1b02a1d004aa4cd2b[Ver commit]
+.. https://github.com/juanaviladev/refactoring-draughts/commit/4845d05d249bc150e01eadc1b02a1d004aa4cd2b[Ver commit]
+
+== Chain of responsability sobre Game
+
+== Unir N vistas
