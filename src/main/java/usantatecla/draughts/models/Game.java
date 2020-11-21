@@ -55,16 +55,15 @@ public class Game {
 	private Error isCorrectPairMove(int pair, Coordinate... coordinates) {
 		assert coordinates[pair] != null;
 		assert coordinates[pair + 1] != null;
-		EmptyOriginChecker emptyOriginChecker = new EmptyOriginChecker();
-		Error error = emptyOriginChecker.check(this.board, this.turn,pair, coordinates);
-		if(error != null) return error;
-		IsPlayerPieceChecker isPlayerPieceChecker = new IsPlayerPieceChecker();
-		error = isPlayerPieceChecker.check(this.board, this.turn,pair, coordinates);
-		if(error != null) return error;
-		NotEmptyTargetChecker notEmptyTargetChecker = new NotEmptyTargetChecker();
-		error = notEmptyTargetChecker.check(this.board, this.turn,pair, coordinates);
-		if(error != null) return error;
-		List<Piece> betweenDiagonalPieces = 
+		List<LegalMovementChecker> checkers = new ArrayList<>();
+		checkers.add(new EmptyOriginChecker());
+		checkers.add(new IsPlayerPieceChecker());
+		checkers.add(new NotEmptyTargetChecker());
+		for(LegalMovementChecker checker : checkers) {
+			Error result = checker.check(this.board, this.turn, pair, coordinates);
+			if(result != null) return result;
+		}
+		List<Piece> betweenDiagonalPieces =
 			this.board.getBetweenDiagonalPieces(coordinates[pair], coordinates[pair + 1]);
 		return this.board.getPiece(coordinates[pair]).isCorrectMovement(betweenDiagonalPieces, pair, coordinates);
 	}
