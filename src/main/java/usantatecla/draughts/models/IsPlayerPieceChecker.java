@@ -10,8 +10,8 @@ public class IsPlayerPieceChecker implements LegalMovementChecker {
         this.turn = turn;
     }
 
-    public Error check(int pair, Coordinate... coordinates) {
-        if (turn.getOppositeColor() == board.getColor(coordinates[pair]))
+    public Error check(Move move) {
+        if (turn.getOppositeColor() == board.getColor(move.getOrigin()))
             return Error.OPPOSITE_PIECE;
         else
             return null;

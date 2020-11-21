@@ -86,7 +86,7 @@ public class PieceParameterizedTest {
 	
 	@Test
 	public void testIsCorrectMovement() {
-		assertEquals(expectedIsCorrectMovement, this.piece.isCorrectMovement(betweenDiagonalPieces, pair, coordinatesCorrectMovement));
+		assertEquals(expectedIsCorrectMovement, this.piece.isCorrectMovement(betweenDiagonalPieces, new Move(coordinatesCorrectMovement[pair], coordinatesCorrectMovement[pair+1])));
 	}
 	
 	private static Draught draught(Color color) {

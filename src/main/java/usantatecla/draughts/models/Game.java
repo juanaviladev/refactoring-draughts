@@ -38,7 +38,7 @@ public class Game {
 		List<Piece> removedPieces = new ArrayList<Piece>();
 		int pair = 0;
 		do {
-			error = this.isCorrectPairMove(pair, coordinates);
+			error = this.isCorrectPairMove(new Move(coordinates[pair], coordinates[pair+1]));
 			if (error == null) {
 				this.pairMove(removedCoordinates, removedPieces, pair, coordinates);
 				pair++;
@@ -52,19 +52,15 @@ public class Game {
 		return error;
 	}
 
-
-
-	private Error isCorrectPairMove(int pair, Coordinate... coordinates) {
-		assert coordinates[pair] != null;
-		assert coordinates[pair + 1] != null;
+	private Error isCorrectPairMove(Move move) {
 		List<LegalMovementChecker> checkers = getLegalMovementCheckers();
 		for(LegalMovementChecker checker : checkers) {
-			Error result = checker.check(pair, coordinates);
+			Error result = checker.check(move);
 			if(result != null) return result;
 		}
 		List<Piece> betweenDiagonalPieces =
-			this.board.getBetweenDiagonalPieces(coordinates[pair], coordinates[pair + 1]);
-		return this.board.getPiece(coordinates[pair]).isCorrectMovement(betweenDiagonalPieces, pair, coordinates);
+			this.board.getBetweenDiagonalPieces(move.getOrigin(), move.getTarget());
+		return this.board.getPiece(move.getOrigin()).isCorrectMovement(betweenDiagonalPieces, move);
 	}
 
 	private List<LegalMovementChecker> getLegalMovementCheckers() {
@@ -144,7 +140,7 @@ public class Game {
 	private boolean isBlocked(Coordinate coordinate) {
 		for (int i = 1; i <= 2; i++)
 			for (Coordinate target : coordinate.getDiagonalCoordinates(i))
-				if (this.isCorrectPairMove(0, coordinate, target) == null)
+				if (this.isCorrectPairMove(new Move(coordinate, target)) == null)
 					return false;
 		return true;
 	}
