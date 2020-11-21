@@ -58,10 +58,12 @@ public class Game {
 		EmptyOriginChecker emptyOriginChecker = new EmptyOriginChecker();
 		Error error = emptyOriginChecker.check(this.board, pair, coordinates);
 		if(error != null) return error;
-		if (this.turn.getOppositeColor() == this.board.getColor(coordinates[pair]))
-			return Error.OPPOSITE_PIECE;
-		if (!this.board.isEmpty(coordinates[pair + 1]))
-			return Error.NOT_EMPTY_TARGET;
+		IsPlayerPieceChecker isPlayerPieceChecker = new IsPlayerPieceChecker();
+		error = isPlayerPieceChecker.check(this.board, this.turn,pair, coordinates);
+		if(error != null) return error;
+		NotEmptyTargetChecker notEmptyTargetChecker = new NotEmptyTargetChecker();
+		error = notEmptyTargetChecker.check(this.board, this.turn,pair, coordinates);
+		if(error != null) return error;
 		List<Piece> betweenDiagonalPieces = 
 			this.board.getBetweenDiagonalPieces(coordinates[pair], coordinates[pair + 1]);
 		return this.board.getPiece(coordinates[pair]).isCorrectMovement(betweenDiagonalPieces, pair, coordinates);
