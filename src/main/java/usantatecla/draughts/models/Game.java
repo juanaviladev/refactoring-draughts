@@ -55,8 +55,9 @@ public class Game {
 	private Error isCorrectPairMove(int pair, Coordinate... coordinates) {
 		assert coordinates[pair] != null;
 		assert coordinates[pair + 1] != null;
-		if (board.isEmpty(coordinates[pair]))
-			return Error.EMPTY_ORIGIN;
+		EmptyOriginChecker emptyOriginChecker = new EmptyOriginChecker();
+		Error error = emptyOriginChecker.check(this.board, pair, coordinates);
+		if(error != null) return error;
 		if (this.turn.getOppositeColor() == this.board.getColor(coordinates[pair]))
 			return Error.OPPOSITE_PIECE;
 		if (!this.board.isEmpty(coordinates[pair + 1]))
