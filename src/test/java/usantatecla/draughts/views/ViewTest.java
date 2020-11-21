@@ -11,6 +11,7 @@ import usantatecla.draughts.controllers.InteractorController;
 import usantatecla.draughts.controllers.PlayController;
 import usantatecla.draughts.controllers.ResumeController;
 import usantatecla.draughts.controllers.StartController;
+import usantatecla.draughts.models.Color;
 import usantatecla.draughts.utils.Console;
 import usantatecla.draughts.utils.YesNoDialog;
 
@@ -21,16 +22,11 @@ import static org.mockito.Mockito.*;
 
 public class ViewTest {
 
-    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-
     @Mock
     private StartController startController;
 
-    @Spy
-    private Console console;
-
     @Mock
-    private PlayView playView;
+    private Console console;
 
     @Mock
     YesNoDialog yesNoDialog;
@@ -38,14 +34,20 @@ public class ViewTest {
     @Mock
     ResumeController resumeController;
 
+    @Mock
+    PlayController playController;
+
     @Spy
     @InjectMocks
-    private final View view = new View();
+    private View view;
+
+    private static final String CANCEL_FORMAT = "-1";
+    private static final String LOST_MESSAGE = "Derrota!!! No puedes mover tus fichas!!!";
 
     @Before
     public void before() {
         MockitoAnnotations.initMocks(this);
-        System.setOut(new PrintStream(outContent));
+        doReturn(Color.WHITE).when(playController).getColor();
     }
 
     @Test
@@ -58,9 +60,10 @@ public class ViewTest {
     @Test
     public void testVisitPlayViewVerifyInteractOnce() {
         PlayController playController = mock(PlayController.class);
+        doReturn(Color.WHITE).when(playController).getColor();
+        doReturn("12.23").when(console).readString("Mueven las blancas: ");
         this.view.visit(playController);
-        verify(this.playView,times(1)).interact(playController);
-        verifyNoMoreInteractions(playController);
+        verify(this.view,times(1)).interact(playController);
     }
 
     @Test
@@ -132,6 +135,30 @@ public class ViewTest {
     @Test
     public void testInteractConsoleShouldPrintTitle() {
         this.view.interact(this.startController);
-        Assert.assertTrue(outContent.toString().contains("Draughts"));
+        verify(this.console).writeln("Draughts");
+    }
+
+    @Test
+    public void testWhenIntroducingCancelFormatThenCancelInvoked() {
+        //TODO: Preguntar por qué con el @Spy de console no funciona el when().thenReturn()
+        doReturn(CANCEL_FORMAT).when(console).readString(any());
+        //when(console.readString(anyString())).thenReturn(CANCEL_FORMAT);
+        this.view.interact(playController);
+        verify(playController, times(1)).cancel();
+    }
+
+    @Test
+    public void testWhenIntroducingWrongFormatCoordinateThenAskAgain() {
+        doReturn("xxx", "12.23").when(console).readString(any());
+        this.view.interact(playController);
+        verify(console, times(2)).readString(any());
+    }
+
+    @Test
+    public void testWhenIntroducingValidCoordinateAndBlockedThenLoose() {
+        doReturn("12.23").when(console).readString(any());
+        doReturn(true).when(playController).isBlocked();
+        this.view.interact(playController);
+        verify(console, times(1)).writeln(LOST_MESSAGE);
     }
 }
