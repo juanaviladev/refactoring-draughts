@@ -8,6 +8,7 @@ import usantatecla.draughts.controllers.StartController;
 import usantatecla.draughts.models.Color;
 import usantatecla.draughts.models.Coordinate;
 import usantatecla.draughts.models.Error;
+import usantatecla.draughts.models.Piece;
 import usantatecla.draughts.utils.YesNoDialog;
 
 import java.util.ArrayList;
@@ -66,7 +67,7 @@ public class View extends SubView implements InteractorControllersVisitor {
     void interact(StartController startController) {
         assert startController != null;
         this.console.writeln(TITTLE);
-        new GameView().write(startController);
+        this.write(startController);
         startController.start();
     }
 
@@ -85,7 +86,7 @@ public class View extends SubView implements InteractorControllersVisitor {
                 this.writeError();
             } else {
                 error = playController.move(this.getCoordinates());
-                new GameView().write(playController);
+                this.write(playController);
                 if (error == null && playController.isBlocked())
                     this.writeLost();
             }
@@ -129,4 +130,31 @@ public class View extends SubView implements InteractorControllersVisitor {
         this.console.writeln(LOST_MESSAGE);
     }
 
+    void write(InteractorController controller) {
+        assert controller != null;
+        final int DIMENSION = controller.getDimension();
+        this.writeNumbersLine(DIMENSION);
+        for (int i = 0; i < DIMENSION; i++)
+            this.writePiecesRow(i, controller);
+        this.writeNumbersLine(DIMENSION);
+    }
+
+    private void writeNumbersLine(final int DIMENSION) {
+        this.console.write(" ");
+        for (int i = 0; i < DIMENSION; i++)
+            this.console.write((i + 1) + "");
+        this.console.writeln();
+    }
+
+    private void writePiecesRow(final int row, InteractorController controller) {
+        this.console.write((row + 1) + "");
+        for (int j = 0; j < controller.getDimension(); j++) {
+            Piece piece = controller.getPiece(new Coordinate(row, j));
+            if (piece == null)
+                this.console.write(" ");
+            else
+                this.console.write(piece.getCode());
+        }
+        this.console.writeln((row + 1) + "");
+    }
 }
