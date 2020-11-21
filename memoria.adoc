@@ -22,4 +22,90 @@ las clases (caja negra).
 
 == Chain of responsability sobre Game
 
+. Planteamos un borrador del diseño al que queremos llegar
+
+[plantuml, ,svg]
+----
+top to bottom direction
+
+class Game
+Game ..> Movement
+Game ..> EmptyOriginChecker
+Game ..> NotEmptyTargetChecker
+Game ..> IsPlayerPieceChecker
+
+class Movement {
+    Movement(Coordinate origin,
+    Coordinate target)
+}
+
+interface LegalMovementChecker {
+    + check(Movement)
+}
+LegalMovementChecker ..> Movement
+
+class EmptyOriginChecker {}
+LegalMovementChecker <|.. EmptyOriginChecker
+EmptyOriginChecker ..> Movement
+EmptyOriginChecker --> LegalMovementChecker
+
+class NotEmptyTargetChecker {}
+LegalMovementChecker <|.. NotEmptyTargetChecker
+NotEmptyTargetChecker ..> Movement
+NotEmptyTargetChecker --> LegalMovementChecker
+
+class IsPlayerPieceChecker {}
+LegalMovementChecker <|.. IsPlayerPieceChecker
+IsPlayerPieceChecker ..> Movement
+IsPlayerPieceChecker --> LegalMovementChecker
+
+note bottom of IsPlayerPieceChecker: OPPOSITE_PIECE
+----
+
+. Desplazamos una de las ramas condicionales a la clase _EmptyOriginChecker_. Es una aplicación
+de _Replace Method with Method Object_. No hemos roto ningun test puesto que el comportamiento de Game sigue siendo exactamente el mismo.
+https://github.com/juanaviladev/refactoring-draughts/commit/590186ee07b948ceb6331154af48fc614bf38939[Ver commit]
+
+. Repetimos el paso anterior para el resto de ramas condicionales.
+https://github.com/juanaviladev/refactoring-draughts/commit/25bc1fd1c0e45972437a1f9cc9abb66e8647ded5[Ver commit]
+
+. Como tenemos múltiples clases que comparten interfaz pública, extraemos el método aplicando _Extract Interface_.
+Las pruebas siguen en verde.
+https://github.com/juanaviladev/refactoring-draughts/commit/d9a82d1d7cf8953b8b74ca724580b36448500d0e[Ver commit]
+
+. Tenemos código duplicado en la clase Game, en lo relativo al uso de los distintos _LegalMovementChecker_.
+En este caso vamos a replantear el método que utiliza los checker para que sea más simple y eliminar el código repetido.
+Las pruebas siguen en verde.
+https://github.com/juanaviladev/refactoring-draughts/commit/61e6878b647cebb934b694d1cef720b4f18af135[Ver commit]
+
+. Separamos la creación de los checkers de su uso, para mejorar la legibilidad y su mantenibilidad.
+Las pruebas siguen en verde.
+https://github.com/juanaviladev/refactoring-draughts/commit/46407f468e2dc3cfa311c8e0099f22f9c6c918d2[Ver commit]
+
+. No todos los checker utilizan los mismos colaboradores, para evitar acoplar a todos con colaboradores que quizás no usen,
+vamos a desplazar los parámetros no comunes a atributos de clase.
+Las pruebas siguen en verde.
+https://github.com/juanaviladev/refactoring-draughts/commit/bfdfe645f24431157d3149d6447d5a8e35983bdf[Ver commit]
+
+. El par _int pair, Coordinate... coordinates_ se repite como grupo de parámetros en varios métodos,
+parece ser un grupo cohesivo de parámetros, creamos una nueva clase que lo representa (Parameter Object): Jugada
+https://github.com/juanaviladev/refactoring-draughts/commit/fc2e992f599b269f99a8dd0af6a721fe097597ad[Ver commit]
+
+. Ahora es necesario actualizar todos los colaboradores para que usen la nueva clase _Move_, sustituyendo
+el anterior par de parámetros. Algunas pruebas se han visto afectadas por el cambio en las interfaces de los métodos.
+https://github.com/juanaviladev/refactoring-draughts/commit/38475c278a864c20ea727fd8c10d562b14b377ad[Ver commit]
+
+. Al extraer la nueva clase _Move_, parece representar más bien un origen->destino dentro de una jugada (es decir, un par de la jugada).
+La jugada podría verse mejor como un contenedor de pares (de hecho, el método _isCorrectPairMove_ de Game nos da una pista clara).
+Mantenemos la clase _Move_ para contener los pares origen -> destino.
+https://github.com/juanaviladev/refactoring-draughts/commit/6c2feaa4c5151765c1083b1146522907e330f9b8[Ver commit]
+
+. Los checker deberían ser los responsables de delegar al siguiente o finalizar la cadena si han detectado un error, movemos esa responsabilidad desde la clase Game.
+https://github.com/juanaviladev/refactoring-draughts/commit/c796e65cf46875e2d1bd4fbd0c075c27e0b66848[Ver commit]
+
+. La lógica de delegar en el siguiente de la cadena o devolver null está duplicada en todos los checker, convertimos la interfaz
+_LegalMovementChecker_ en clase abstracta para compartir el comportamiento (Extract superclass).
+https://github.com/juanaviladev/refactoring-draughts/commit/c796e65cf46875e2d1bd4fbd0c075c27e0b66848[Ver commit]
+
+
 == Unir N vistas
