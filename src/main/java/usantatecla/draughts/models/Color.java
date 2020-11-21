@@ -26,7 +26,7 @@ public enum Color {
             for(Color color : Color.values())
                 if (color.isInitialRow(coordinate.getRow()))
                     return color;
-        return null;
+        return NULL;
     }
 	
 }
