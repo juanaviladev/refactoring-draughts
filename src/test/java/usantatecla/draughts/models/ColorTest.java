@@ -3,6 +3,10 @@ package usantatecla.draughts.models;
 import org.junit.Assert;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 public class ColorTest {
     Color white = Color.WHITE;
     Color black = Color.BLACK;
@@ -25,14 +29,13 @@ public class ColorTest {
 
     @Test
     public void testGetInitialColorWhenCoordinateIsWhiteShouldReturnNull() {
-        Assert.assertNull(Color.getInitialColor(coordinate(0, 0)));
-        Assert.assertNull(Color.getInitialColor(coordinate(2, 2)));
+        assertThat(Color.getInitialColor(coordinate(0, 0)), is(equalTo(Color.NULL)));
     }
 
     @Test
     public void testGetInitialColorWhenCoordinateDoesntHavePieceShouldReturnNull() {
-        Assert.assertNull(Color.getInitialColor(coordinate(3, 3)));
-        Assert.assertNull(Color.getInitialColor(coordinate(4, 4)));
+        assertThat(Color.getInitialColor(coordinate(3, 3)), is(equalTo(Color.NULL)));
+        assertThat(Color.getInitialColor(coordinate(4, 5)), is(equalTo(Color.NULL)));
     }
 
     private static Coordinate coordinate(int row, int column) {
