@@ -59,7 +59,7 @@ public class Game {
 		assert coordinates[pair + 1] != null;
 		List<LegalMovementChecker> checkers = getLegalMovementCheckers();
 		for(LegalMovementChecker checker : checkers) {
-			Error result = checker.check(this.board, this.turn, pair, coordinates);
+			Error result = checker.check(pair, coordinates);
 			if(result != null) return result;
 		}
 		List<Piece> betweenDiagonalPieces =
@@ -69,9 +69,9 @@ public class Game {
 
 	private List<LegalMovementChecker> getLegalMovementCheckers() {
 		List<LegalMovementChecker> checkers = new ArrayList<>();
-		checkers.add(new EmptyOriginChecker());
-		checkers.add(new IsPlayerPieceChecker());
-		checkers.add(new NotEmptyTargetChecker());
+		checkers.add(new EmptyOriginChecker(this.board));
+		checkers.add(new IsPlayerPieceChecker(this.board, this.turn));
+		checkers.add(new NotEmptyTargetChecker(this.board));
 		return checkers;
 	}
 
