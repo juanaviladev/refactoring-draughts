@@ -9,13 +9,14 @@ import usantatecla.draughts.models.Color;
 import usantatecla.draughts.models.Coordinate;
 import usantatecla.draughts.models.Error;
 import usantatecla.draughts.models.Piece;
+import usantatecla.draughts.utils.Console;
 import usantatecla.draughts.utils.YesNoDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class View extends SubView implements InteractorControllersVisitor {
+public class View implements InteractorControllersVisitor {
 
     private static final String MESSAGE = "¿Queréis jugar otra";
     private static final String TITTLE = "Draughts";
@@ -28,9 +29,11 @@ public class View extends SubView implements InteractorControllersVisitor {
     private static final String LOST_MESSAGE = "Derrota!!! No puedes mover tus fichas!!!";
 
     private YesNoDialog yesNoDialog;
+    private Console console;
 
     public View(){
         this.yesNoDialog = new YesNoDialog();
+        this.console = new Console();
     }
 
     public void interact(InteractorController controller) {
