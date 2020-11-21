@@ -9,7 +9,7 @@ public class EmptyOriginChecker implements LegalMovementChecker {
     }
 
     @Override
-    public Error check(Move move) {
+    public Error check(Move.Pair move) {
         if (board.isEmpty(move.getOrigin()))
             return Error.EMPTY_ORIGIN;
         else

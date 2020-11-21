@@ -10,7 +10,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    Error isCorrectDiagonalMovement(int amountBetweenDiagonalPieces, Move move) {
+    Error isCorrectDiagonalMovement(int amountBetweenDiagonalPieces, Move.Pair move) {
 		if (!this.isAdvanced(move.getOrigin(), move.getTarget()))
 			return Error.NOT_ADVANCED;
 		int distance = move.getOrigin().getDiagonalDistance(move.getTarget());

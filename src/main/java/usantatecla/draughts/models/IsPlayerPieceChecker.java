@@ -10,7 +10,7 @@ public class IsPlayerPieceChecker implements LegalMovementChecker {
         this.turn = turn;
     }
 
-    public Error check(Move move) {
+    public Error check(Move.Pair move) {
         if (turn.getOppositeColor() == board.getColor(move.getOrigin()))
             return Error.OPPOSITE_PIECE;
         else

@@ -12,7 +12,7 @@ public abstract class Piece {
 		this.color = color;
 	}
 
-	Error isCorrectMovement(List<Piece> betweenDiagonalPieces, Move move){
+	Error isCorrectMovement(List<Piece> betweenDiagonalPieces, Move.Pair move){
 		if (!move.getOrigin().isOnDiagonal(move.getTarget()))
 			return Error.NOT_DIAGONAL;
 		for(Piece piece : betweenDiagonalPieces)
@@ -21,7 +21,7 @@ public abstract class Piece {
 		return this.isCorrectDiagonalMovement(betweenDiagonalPieces.size(), move);
 	}
 
-	abstract Error isCorrectDiagonalMovement(int amountBetweenDiagonalPieces, Move move);
+	abstract Error isCorrectDiagonalMovement(int amountBetweenDiagonalPieces, Move.Pair move);
 
 	boolean isLimit(Coordinate coordinate) {
 		return coordinate.isFirst() && this.getColor() == Color.WHITE

@@ -8,7 +8,7 @@ public class NotEmptyTargetChecker implements LegalMovementChecker {
         this.board = board;
     }
 
-    public Error check(Move move) {
+    public Error check(Move.Pair move) {
         if (!board.isEmpty(move.getTarget()))
             return Error.NOT_EMPTY_TARGET;
         else
