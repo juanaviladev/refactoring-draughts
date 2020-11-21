@@ -1,5 +1,6 @@
 package usantatecla.draughts.views;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -10,14 +11,23 @@ import usantatecla.draughts.controllers.InteractorController;
 import usantatecla.draughts.controllers.PlayController;
 import usantatecla.draughts.controllers.ResumeController;
 import usantatecla.draughts.controllers.StartController;
+import usantatecla.draughts.utils.Console;
 import usantatecla.draughts.utils.YesNoDialog;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import static org.mockito.Mockito.*;
 
 public class ViewTest {
 
+    private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+
     @Mock
-    private StartView startView;
+    private StartController startController;
+
+    @Spy
+    private Console console;
 
     @Mock
     private PlayView playView;
@@ -35,14 +45,14 @@ public class ViewTest {
     @Before
     public void before() {
         MockitoAnnotations.initMocks(this);
+        System.setOut(new PrintStream(outContent));
     }
 
     @Test
     public void testVisitStartViewVerifyInteractOnce() {
         StartController startController = mock(StartController.class);
         this.view.visit(startController);
-        verify(this.startView,times(1)).interact(startController);
-        verifyNoMoreInteractions(startController);
+        verify(this.view,times(1)).interact(startController);
     }
 
     @Test
@@ -85,7 +95,7 @@ public class ViewTest {
 
     @Test(expected = AssertionError.class)
     public void testInteractWithNullControllerShouldThrowAssertionError() {
-        this.view.interact(null);
+        this.view.interact((InteractorController)null);
     }
 
     @Test
@@ -100,5 +110,28 @@ public class ViewTest {
         when(this.yesNoDialog.read(anyString())).thenReturn(false);
         this.view.interact(resumeController);
         verify(resumeController, times(1)).next();
+    }
+
+    @Test(expected = AssertionError.class)
+    public void testInteractNullControllerShouldThrowError() {
+        view.interact((StartController)null);
+    }
+
+    @Test
+    public void testInteractShouldBeCalledOnce() {
+        this.view.interact(this.startController);
+        verify(startController, times(1)).start();
+        verify(startController, atMost(1)).start();
+    }
+
+    @Test
+    public void testInteractConsoleShouldWriteTitle() {
+        this.view.interact(this.startController);
+        verify(this.console, times(1)).writeln(anyString());
+    }
+    @Test
+    public void testInteractConsoleShouldPrintTitle() {
+        this.view.interact(this.startController);
+        Assert.assertTrue(outContent.toString().contains("Draughts"));
     }
 }
