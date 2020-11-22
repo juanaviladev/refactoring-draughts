@@ -13,12 +13,6 @@ public class StartController extends InteractorController {
 	public void start() {
         this.state.next();
 	}
-    
-    @Override
-	public void accept(InteractorControllersVisitor controllersVisitor) {
-		assert controllersVisitor != null;
-		controllersVisitor.visit(this);
-    }
 
     public void control() {
 		this.getView().writeln(View.TITTLE);
