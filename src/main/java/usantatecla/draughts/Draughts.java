@@ -10,20 +10,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 class Draughts {
-    
-    private Logic logic;
-    private Game game;
+
     private State state;
     private Map<StateValue, InteractorController> controllers;
 
     private Draughts(){
-        this.logic = new Logic();
-        this.game = new Game();
+        Game game = new Game();
         this.state = new State();
-        this.controllers = new HashMap<StateValue, InteractorController>();
-        this.controllers.put(StateValue.INITIAL, new StartController(this.game, this.state));
-        this.controllers.put(StateValue.IN_GAME, new PlayController(this.game, this.state));
-        this.controllers.put(StateValue.FINAL, new ResumeController(this.game, this.state));
+        this.controllers = new HashMap<>();
+
+        this.controllers.put(StateValue.INITIAL, new StartController(game, this.state));
+        this.controllers.put(StateValue.IN_GAME, new PlayController(game, this.state));
+        this.controllers.put(StateValue.FINAL, new ResumeController(game, this.state));
         this.controllers.put(StateValue.EXIT, null);
     }
 
