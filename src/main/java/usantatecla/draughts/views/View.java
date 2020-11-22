@@ -36,11 +36,6 @@ public class View implements InteractorControllersVisitor {
         this.console = new Console();
     }
 
-    public void interact(InteractorController controller) {
-        assert controller != null;
-        controller.accept(this);
-    }
-
     @Override
     public void visit(StartController startController) {
         assert startController != null;

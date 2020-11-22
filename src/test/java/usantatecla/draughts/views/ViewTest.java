@@ -77,14 +77,6 @@ public class ViewTest {
         verify(this.playController,times(1)).control();
     }
 
-    @Test
-    public void testInteractControllerVerifyAcceptOnce() {
-        InteractorController interactorController = mock(InteractorController.class);
-        this.view.interact(interactorController);
-        verify(interactorController, times(1)).accept(this.view);
-        verifyNoMoreInteractions(interactorController);
-    }
-
     @Test(expected = AssertionError.class)
     public void testVisitWithNullStartControllerShouldThrowAssertionError() {
         this.view.visit((StartController) null);
@@ -100,11 +92,6 @@ public class ViewTest {
         this.view.visit((ResumeController) null);
     }
 
-    @Test(expected = AssertionError.class)
-    public void testInteractWithNullControllerShouldThrowAssertionError() {
-        this.view.interact((InteractorController)null);
-    }
-
     @Test
     public void testGivenResumeQuestionOnYesThenResetState() {
         when(this.yesNoDialog.read(anyString())).thenReturn(true);
@@ -117,18 +104,6 @@ public class ViewTest {
         when(this.yesNoDialog.read(anyString())).thenReturn(false);
         this.view.interact(resumeController);
         verify(resumeController, times(1)).next();
-    }
-
-    @Test(expected = AssertionError.class)
-    public void testInteractNullControllerShouldThrowError() {
-        view.interact((StartController)null);
-    }
-
-    @Test
-    public void testInteractShouldBeCalledOnce() {
-        this.view.interact(this.startController);
-        verify(startController, times(1)).accept(this.view);
-        verify(startController, atMost(1)).accept(this.view);
     }
 
     @Test
