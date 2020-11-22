@@ -2,6 +2,7 @@ package usantatecla.draughts.controllers;
 
 import usantatecla.draughts.models.Game;
 import usantatecla.draughts.models.State;
+import usantatecla.draughts.views.View;
 
 public class StartController extends InteractorController {
 
@@ -19,4 +20,18 @@ public class StartController extends InteractorController {
 		controllersVisitor.visit(this);
     }
 
+    public void control() {
+		new View().writeln(View.TITTLE);
+		this.write(this);
+		this.start();
+	}
+
+	void write(InteractorController controller) {
+		assert controller != null;
+		final int DIMENSION = controller.getDimension();
+		new View().writeNumbersLine(DIMENSION);
+		for (int i = 0; i < DIMENSION; i++)
+			new View().writePiecesRow(i, controller);
+		new View().writeNumbersLine(DIMENSION);
+	}
 }

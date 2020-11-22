@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 public class View implements InteractorControllersVisitor {
 
     private static final String MESSAGE = "¿Queréis jugar otra";
-    private static final String TITTLE = "Draughts";
+    public static final String TITTLE = "Draughts";
     private static final String COLOR_PARAM = "#color";
     private static final String[] COLOR_VALUES = { "blancas", "negras" };
     private static final String PROMPT = "Mueven las " + COLOR_PARAM + ": ";
@@ -142,14 +142,22 @@ public class View implements InteractorControllersVisitor {
         this.writeNumbersLine(DIMENSION);
     }
 
-    private void writeNumbersLine(final int DIMENSION) {
+    public void write(String text) {
+        console.write(text);
+    }
+
+    public void writeln(String text) {
+        console.writeln(text);
+    }
+
+    public void writeNumbersLine(final int DIMENSION) {
         this.console.write(" ");
         for (int i = 0; i < DIMENSION; i++)
             this.console.write((i + 1) + "");
         this.console.writeln();
     }
 
-    private void writePiecesRow(final int row, InteractorController controller) {
+    public void writePiecesRow(final int row, InteractorController controller) {
         this.console.write((row + 1) + "");
         for (int j = 0; j < controller.getDimension(); j++) {
             Piece piece = controller.getPiece(new Coordinate(row, j));
