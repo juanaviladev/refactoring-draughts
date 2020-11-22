@@ -68,7 +68,7 @@ public class ViewTest {
     public void testVisitStartViewVerifyInteractOnce() {
         StartController startController = mock(StartController.class);
         this.view.visit(startController);
-        verify(this.view,times(1)).interact(startController);
+        verify(startController,times(1)).control();
     }
 
     @Test

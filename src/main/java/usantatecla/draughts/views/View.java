@@ -44,7 +44,7 @@ public class View implements InteractorControllersVisitor {
     @Override
     public void visit(StartController startController) {
         assert startController != null;
-        this.interact(startController);
+        startController.control();
     }
 
     @Override
