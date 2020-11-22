@@ -124,3 +124,33 @@ https://github.com/juanaviladev/refactoring-draughts/commit/e4bd0c126499817a2028
 
 . Eliminamos _SubView_, puesto que solamente tenemos una subclase (_View_), ya no tiene sentido al unir todas las vistas en 1.
 https://github.com/juanaviladev/refactoring-draughts/commit/5b890881b049431b7b49308b78ffcb1d950e3456[Ver commit]
+
+== Vista pasiva
+
+1. Comenzamos con _StartController_, moviendo la lógica de _View_ hacia
+el método _control_ del controlador. Mantenemos la lógica que hay en la vista
+para más tarde eliminarla, continuan pasando los test.
+https://github.com/juanaviladev/refactoring-draughts/commit/d7e1c58b73aecba0e8a4cc03483668fca47791c7[Ver commit]
+
+2. Eliminamos un _unused parameter_ y una _temp variable_. El controlador está pasándose a si mismo como parámetro y
+almacenando en una variable temporal DIMENSION.
+https://github.com/juanaviladev/refactoring-draughts/commit/84d8a5f3f0f00ed8228f470028a1c708d2c99887[Ver commit]
+
+3. Extraemos la vista como atributo, para evitar el código repetido
+de creación de la vista.
+https://github.com/juanaviladev/refactoring-draughts/commit/d7e1c58b73aecba0e8a4cc03483668fca47791c7[Ver commit]
+
+4. Eliminamos el ciclo entre Vista -> Controlador moviendo más lógica al controlador, la vista recibe ahora
+los datos que necesita desde el controlador.
+https://github.com/juanaviladev/refactoring-draughts/commit/4b84eaadf0f731f7d19a8330e33906b270b5a4bc[Ver commit]
+
+5. Invocamos al nuevo método control() desde la vista antes de realizar la inversión de control. Comprobamos
+que sólo fallan las pruebas de caja blanca (el comportamiento input/output sigue siendo el mismo) sobre las interacciones de la vista con el controlador.
+https://github.com/juanaviladev/refactoring-draughts/commit/a801e8a88d7070190350d15af34c76f637a21c01[Ver commit]
+
+6. Eliminamos los métodos desplazados al controlador, y movemos casos de prueba a la suite del controlador.
+https://github.com/juanaviladev/refactoring-draughts/commit/23206f454208ccd8272ef19ef287f9a8f5ed644f[Ver commit]
+
+7. Repetimos el proceso anterior con _ResumeController_.
+.. https://github.com/juanaviladev/refactoring-draughts/commit/2d4540084690eeb39d527699f62c23aa89a92569[Ver commit]
+.. https://github.com/juanaviladev/refactoring-draughts/commit/6f0c3ee505e4c9649444b48417aa4919ad6c9dd6[Ver commit]
