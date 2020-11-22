@@ -22,16 +22,14 @@ public class StartController extends InteractorController {
 
     public void control() {
 		new View().writeln(View.TITTLE);
-		this.write(this);
+		this.write();
 		this.start();
 	}
 
-	void write(InteractorController controller) {
-		assert controller != null;
-		final int DIMENSION = controller.getDimension();
-		new View().writeNumbersLine(DIMENSION);
-		for (int i = 0; i < DIMENSION; i++)
-			new View().writePiecesRow(i, controller);
-		new View().writeNumbersLine(DIMENSION);
+	void write() {
+		new View().writeNumbersLine(this.getDimension());
+		for (int i = 0; i < this.getDimension(); i++)
+			new View().writePiecesRow(i, this);
+		new View().writeNumbersLine(this.getDimension());
 	}
 }
