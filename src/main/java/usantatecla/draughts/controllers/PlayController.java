@@ -6,6 +6,7 @@ import usantatecla.draughts.views.View;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class PlayController extends InteractorController {
 
@@ -40,9 +41,9 @@ public class PlayController extends InteractorController {
         do {
             error = null;
             this.string = this.getView().read(this.getColor());
-            if (this.getView().isCanceledFormat())
+            if (this.isCanceledFormat(this.string))
                 this.cancel();
-            else if (!this.getView().isMoveFormat()) {
+            else if (!this.isMoveFormat(this.string)) {
                 error = Error.BAD_FORMAT;
                 this.getView().writeError();
             } else {
@@ -55,7 +56,7 @@ public class PlayController extends InteractorController {
     }
 
     private Coordinate[] getCoordinates() {
-        assert this.getView().isMoveFormat();
+        assert this.isMoveFormat(this.string);
         List<Coordinate> coordinateList = new ArrayList<Coordinate>();
         while (string.length() > 0) {
             coordinateList.add(Coordinate.getInstance(string.substring(0, 2)));
@@ -68,6 +69,14 @@ public class PlayController extends InteractorController {
             coordinates[i] = coordinateList.get(i);
         }
         return coordinates;
+    }
+
+    public boolean isCanceledFormat(String text) {
+        return text.equals(View.CANCEL_FORMAT);
+    }
+
+    public boolean isMoveFormat(String text) {
+        return Pattern.compile(View.MOVEMENT_FORMAT).matcher(text).find();
     }
 
 }
