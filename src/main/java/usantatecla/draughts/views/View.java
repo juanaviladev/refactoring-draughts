@@ -1,10 +1,8 @@
 package usantatecla.draughts.views;
 
 import usantatecla.draughts.controllers.InteractorController;
-import usantatecla.draughts.controllers.InteractorControllersVisitor;
 import usantatecla.draughts.controllers.PlayController;
 import usantatecla.draughts.controllers.ResumeController;
-import usantatecla.draughts.controllers.StartController;
 import usantatecla.draughts.models.Color;
 import usantatecla.draughts.models.Coordinate;
 import usantatecla.draughts.models.Error;
@@ -16,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class View implements InteractorControllersVisitor {
+public class View {
 
     public static final String MESSAGE = "¿Queréis jugar otra";
     public static final String TITTLE = "Draughts";
@@ -34,24 +32,6 @@ public class View implements InteractorControllersVisitor {
     public View(){
         this.yesNoDialog = new YesNoDialog();
         this.console = new Console();
-    }
-
-    @Override
-    public void visit(StartController startController) {
-        assert startController != null;
-        startController.control();
-    }
-
-    @Override
-    public void visit(PlayController playController) {
-        assert playController != null;
-        playController.control();
-    }
-
-    @Override
-    public void visit(ResumeController resumeController) {
-        assert resumeController != null;
-        resumeController.control();
     }
 
     void interact(ResumeController resumeController) {
