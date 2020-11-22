@@ -107,5 +107,20 @@ https://github.com/juanaviladev/refactoring-draughts/commit/c796e65cf46875e2d1bd
 _LegalMovementChecker_ en clase abstracta para compartir el comportamiento (Extract superclass).
 https://github.com/juanaviladev/refactoring-draughts/commit/c796e65cf46875e2d1bd4fbd0c075c27e0b66848[Ver commit]
 
-
 == Unir N vistas
+
+. De todas las vistas, _ResumeView_ es la que menos dependencias aferentes tiene, comenzamos por ella para evitar
+la inestabilidad. La fusionamos con _View_. También fusionamos las pruebas, que se han roto al desaparecer la vista _ResumeView_.
+https://github.com/juanaviladev/refactoring-draughts/commit/654f598e6ea3550708a20fed90e8527fd7ce6c75[Ver commit]
+
+. Continuamos con _StartView_. Y convertimos _View_ en subclase de _SubView_ para poder utilizar la consola.
+https://github.com/juanaviladev/refactoring-draughts/commit/20f4431023b96cdbdbefea389a51b981c5b51d1e[Ver commit]
+
+. Continuamos con _PlayView_.
+https://github.com/juanaviladev/refactoring-draughts/commit/d46decf054f1e3418bad49cffa77a2a4df863d3e[Ver commit]
+
+. Continuamos con _GameView_.
+https://github.com/juanaviladev/refactoring-draughts/commit/e4bd0c126499817a202889bd0fd7eb5650ce13b5[Ver commit]
+
+. Eliminamos _SubView_, puesto que solamente tenemos una subclase (_View_), ya no tiene sentido al unir todas las vistas en 1.
+https://github.com/juanaviladev/refactoring-draughts/commit/5b890881b049431b7b49308b78ffcb1d950e3456[Ver commit]
