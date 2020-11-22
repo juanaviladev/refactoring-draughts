@@ -65,20 +65,6 @@ public class ViewTest {
     }
 
     @Test
-    public void testGivenResumeQuestionOnYesThenResetState() {
-        when(this.yesNoDialog.read(anyString())).thenReturn(true);
-        this.view.interact(resumeController);
-        verify(resumeController, times(1)).reset();
-    }
-
-    @Test
-    public void testGivenResumeQuestionOnNoThenStateFinal() {
-        when(this.yesNoDialog.read(anyString())).thenReturn(false);
-        this.view.interact(resumeController);
-        verify(resumeController, times(1)).next();
-    }
-
-    @Test
     public void testWhenIntroducingCancelFormatThenCancelInvoked() {
         //TODO: Preguntar por qué con el @Spy de console no funciona el when().thenReturn()
         doReturn(CANCEL_FORMAT).when(console).readString(any());
