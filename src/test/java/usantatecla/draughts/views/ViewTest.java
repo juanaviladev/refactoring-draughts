@@ -73,11 +73,8 @@ public class ViewTest {
 
     @Test
     public void testVisitPlayViewVerifyInteractOnce() {
-        PlayController playController = mock(PlayController.class);
-        doReturn(Color.WHITE).when(playController).getColor();
-        doReturn("12.23").when(console).readString("Mueven las blancas: ");
         this.view.visit(playController);
-        verify(this.view,times(1)).interact(playController);
+        verify(this.playController,times(1)).control();
     }
 
     @Test

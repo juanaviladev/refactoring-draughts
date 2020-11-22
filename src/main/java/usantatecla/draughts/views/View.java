@@ -50,7 +50,7 @@ public class View implements InteractorControllersVisitor {
     @Override
     public void visit(PlayController playController) {
         assert playController != null;
-        this.interact(playController);
+        playController.control();
     }
 
     @Override
@@ -89,20 +89,20 @@ public class View implements InteractorControllersVisitor {
         } while (error != null);
     }
 
-    private String read(Color color) {
+    public String read(Color color) {
         final String titleColor = PROMPT.replace(COLOR_PARAM ,COLOR_VALUES[color.ordinal()]);
         return this.console.readString(titleColor);
     }
 
-    private boolean isCanceledFormat() {
+    public boolean isCanceledFormat() {
         return string.equals(CANCEL_FORMAT);
     }
 
-    private boolean isMoveFormat() {
+    public boolean isMoveFormat() {
         return Pattern.compile(MOVEMENT_FORMAT).matcher(string).find();
     }
 
-    private void writeError(){
+    public void writeError(){
         this.console.writeln(ERROR_MESSAGE);
     }
 
@@ -122,7 +122,7 @@ public class View implements InteractorControllersVisitor {
         return coordinates;
     }
 
-    private void writeLost() {
+    public void writeLost() {
         this.console.writeln(LOST_MESSAGE);
     }
 
