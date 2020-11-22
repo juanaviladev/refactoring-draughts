@@ -15,6 +15,10 @@ public class StartController extends InteractorController {
         this.view = new View();
 	}
 
+	View getView() {
+		return view;
+	}
+
 	public void start() {
         this.state.next();
 	}
@@ -26,27 +30,27 @@ public class StartController extends InteractorController {
     }
 
     public void control() {
-		this.view.writeln(View.TITTLE);
+		this.getView().writeln(View.TITTLE);
 		this.write();
 		this.start();
 	}
 
 	void write() {
-		this.view.writeNumbersLine(this.getDimension());
+		this.getView().writeNumbersLine(this.getDimension());
 		for (int i = 0; i < this.getDimension(); i++)
 			this.writePiecesRow(i);
-		this.view.writeNumbersLine(this.getDimension());
+		this.getView().writeNumbersLine(this.getDimension());
 	}
 
 	void writePiecesRow(final int row) {
-		this.view.write((row + 1) + "");
+		this.getView().write((row + 1) + "");
 		for (int j = 0; j < this.getDimension(); j++) {
 			Piece piece = this.getPiece(new Coordinate(row, j));
 			if (piece == null)
-				this.view.write(" ");
+				this.getView().write(" ");
 			else
-				this.view.write(piece.getCode());
+				this.getView().write(piece.getCode());
 		}
-		this.view.writeln((row + 1) + "");
+		this.getView().writeln((row + 1) + "");
 	}
 }

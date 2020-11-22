@@ -67,13 +67,6 @@ public class View implements InteractorControllersVisitor {
             resumeController.next();
     }
 
-    void interact(StartController startController) {
-        assert startController != null;
-        this.console.writeln(TITTLE);
-        this.write(startController);
-        startController.start();
-    }
-
     private String string;
 
     void interact(PlayController playController) {

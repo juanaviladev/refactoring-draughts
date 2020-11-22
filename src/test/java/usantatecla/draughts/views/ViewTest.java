@@ -137,19 +137,8 @@ public class ViewTest {
     @Test
     public void testInteractShouldBeCalledOnce() {
         this.view.interact(this.startController);
-        verify(startController, times(1)).start();
-        verify(startController, atMost(1)).start();
-    }
-
-    @Test
-    public void testInteractConsoleShouldWriteTitle() {
-        this.view.interact(this.startController);
-        verify(this.console, times(1)).writeln(anyString());
-    }
-    @Test
-    public void testInteractConsoleShouldPrintTitle() {
-        this.view.interact(this.startController);
-        verify(this.console).writeln("Draughts");
+        verify(startController, times(1)).accept(this.view);
+        verify(startController, atMost(1)).accept(this.view);
     }
 
     @Test
