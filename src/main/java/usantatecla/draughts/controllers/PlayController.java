@@ -12,7 +12,7 @@ public class PlayController extends InteractorController {
 
     private CancelController cancelController;
     private MoveController moveController;
-    private String string;
+    private String input;
 
     public PlayController(Game game, State state) {
         super(game, state);
@@ -40,10 +40,10 @@ public class PlayController extends InteractorController {
         Error error;
         do {
             error = null;
-            this.string = this.getView().read(this.getColor());
-            if (this.isCanceledFormat(this.string))
+            this.input = this.getView().read(this.getColor());
+            if (this.isCanceledFormat(this.input))
                 this.cancel();
-            else if (!this.isMoveFormat(this.string)) {
+            else if (!this.isMoveFormat(this.input)) {
                 error = Error.BAD_FORMAT;
                 this.getView().writeError();
             } else {
@@ -56,13 +56,13 @@ public class PlayController extends InteractorController {
     }
 
     private Coordinate[] getCoordinates() {
-        assert this.isMoveFormat(this.string);
+        assert this.isMoveFormat(this.input);
         List<Coordinate> coordinateList = new ArrayList<Coordinate>();
-        while (string.length() > 0) {
-            coordinateList.add(Coordinate.getInstance(string.substring(0, 2)));
-            string = string.substring(2, string.length());
-            if (string.length() > 0 && string.charAt(0) == '.')
-                string = string.substring(1, string.length());
+        while (input.length() > 0) {
+            coordinateList.add(Coordinate.getInstance(input.substring(0, 2)));
+            input = input.substring(2, input.length());
+            if (input.length() > 0 && input.charAt(0) == '.')
+                input = input.substring(1, input.length());
         }
         Coordinate[] coordinates = new Coordinate[coordinateList.size()];
         for (int i = 0; i < coordinates.length; i++) {
