@@ -56,7 +56,7 @@ public class View implements InteractorControllersVisitor {
     @Override
     public void visit(ResumeController resumeController) {
         assert resumeController != null;
-        this.interact(resumeController);
+        resumeController.control();
     }
 
     void interact(ResumeController resumeController) {

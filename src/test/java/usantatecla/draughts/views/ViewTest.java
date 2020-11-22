@@ -81,13 +81,6 @@ public class ViewTest {
     }
 
     @Test
-    public void testVisitResumeViewVerifyInteractOnce() {
-        ResumeController resumeController = mock(ResumeController.class);
-        this.view.visit(resumeController);
-        verify(this.view,times(1)).interact(resumeController);
-    }
-
-    @Test
     public void testInteractControllerVerifyAcceptOnce() {
         InteractorController interactorController = mock(InteractorController.class);
         this.view.interact(interactorController);
