@@ -16,7 +16,7 @@ public abstract class InteractorController extends Controller {
 		return this.game.getPiece(coordinate);
 	}
 
-	abstract public void accept(InteractorControllersVisitor controllersVisitor);
+	public void accept(InteractorControllersVisitor controllersVisitor) { }
 
 	void write() {
 		this.getView().writeNumbersLine(this.getDimension());
