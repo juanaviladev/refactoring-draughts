@@ -6,8 +6,11 @@ import usantatecla.draughts.views.View;
 
 public class StartController extends InteractorController {
 
+	private View view;
+
 	public StartController(Game game, State state) {
         super(game, state);
+        this.view = new View();
 	}
 
 	public void start() {
@@ -21,15 +24,15 @@ public class StartController extends InteractorController {
     }
 
     public void control() {
-		new View().writeln(View.TITTLE);
+		this.view.writeln(View.TITTLE);
 		this.write();
 		this.start();
 	}
 
 	void write() {
-		new View().writeNumbersLine(this.getDimension());
+		this.view.writeNumbersLine(this.getDimension());
 		for (int i = 0; i < this.getDimension(); i++)
-			new View().writePiecesRow(i, this);
-		new View().writeNumbersLine(this.getDimension());
+			this.view.writePiecesRow(i, this);
+		this.view.writeNumbersLine(this.getDimension());
 	}
 }
