@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 
 public class View implements InteractorControllersVisitor {
 
-    private static final String MESSAGE = "¿Queréis jugar otra";
+    public static final String MESSAGE = "¿Queréis jugar otra";
     public static final String TITTLE = "Draughts";
     private static final String COLOR_PARAM = "#color";
     private static final String[] COLOR_VALUES = { "blancas", "negras" };
