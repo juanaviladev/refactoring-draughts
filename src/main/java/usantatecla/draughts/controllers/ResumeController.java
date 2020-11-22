@@ -31,10 +31,4 @@ public class ResumeController extends InteractorController {
 			this.next();
 	}
 
-    @Override
-	public void accept(InteractorControllersVisitor controllersVisitor) {
-		assert controllersVisitor != null;
-		controllersVisitor.visit(this);
-	}
-
 }
